@@ -1,12 +1,13 @@
 <?php
 
 namespace MonacoGP;
+
 use DateTimeImmutable;
 
 class TimeCounter
 {
 
-   public function lapTimeCounter(array $startTimeArray, array $endTimeArray): array
+    public function lapTimeCounter(array $startTimeArray, array $endTimeArray): array
     {
         $allLapTimeArray = [];
         foreach ($startTimeArray as $keyStart => $startTimeString) {
@@ -20,7 +21,6 @@ class TimeCounter
             $allLapTimeArray[$keyStart] = substr($lapTime->format('%H:%I:%S.%F'), 0, -3);
 
         }
-        //asort($allLapTimeArray);
 
         return $allLapTimeArray;
     }

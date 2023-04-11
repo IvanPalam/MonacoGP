@@ -3,9 +3,11 @@
 namespace MonacoGP;
 
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 class ReportPrinter
 {
-    function reportPrint(array $reportArray): void
+    public function reportPrint(array $reportArray): void
     {
         $countArray = [];
         echo '<ol>';
@@ -19,4 +21,51 @@ class ReportPrinter
         echo '</ol>';
     }
 
+
+    public function printCliHtmlReport(
+        array $racerNameArray,
+        array $teamNameArray,
+        array $lapTimeArray,
+        OutputInterface $output,
+        string $sortOrder
+    ): void
+    {
+        if ($sortOrder == "DESC" || !$sortOrder || $sortOrder == "ASC") {
+
+            if ($sortOrder == "DESC") {
+                arsort($lapTimeArray);
+            } else {
+                asort($lapTimeArray);
+            }
+            $i = 1;
+            foreach ($lapTimeArray as $keyLapTime => $lapTimeString) {
+                $output->writeln
+                ($i . ' ' . $racerNameArray[$keyLapTime] . " | " .
+                    $teamNameArray[$keyLapTime] . " | " . $lapTimeString);
+                if ($i == 15) {
+                    $output->writeln('--------------------------------------------------------------------');
+                }
+                $i++;
+
+            }
+        } else {
+            $output->writeln("Enter the correct command from the available ones: 'ASC' or 'DESC'");
+        }
+    }
+
+    public function printRacerInfo(
+        string $racer,
+        array $racerNameArray,
+        array $teamNameArray,
+        array $lapTimeArray,
+        OutputInterface $output
+    ): void
+    {
+        foreach ($racerNameArray as $key => $racerNameString) {
+            if ($racer == $racerNameString) {
+                $output->writeln($racerNameString . " " . $teamNameArray[$key] . " " . $lapTimeArray[$key]);
+
+            }
+        }
+    }
 }

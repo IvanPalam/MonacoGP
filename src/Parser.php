@@ -31,19 +31,29 @@ class Parser
         return $allRacerTimes;
     }
 
-    function
-    getFullNameAndTeam(array $array): array
+    public function getRacerName(array $array): array
     {
 
-        $allAbbrevNamesRacer = [];
-        foreach ($array as $key => $abbrevString) {
-            $nameTeamString = preg_replace('/[A-Z]{3}_/', '', $abbrevString);
-            $nameTeamString = str_replace('_', ' | ', $nameTeamString);
-            $nameTeamString = rtrim($nameTeamString, "\n");
-            $allAbbrevNamesRacer[$key] = $nameTeamString;
+        $allRacerNames = [];
+        foreach ($array as $key => $string) {
+            if (preg_match('/_(.+)_/', $string, $newArray))
+                foreach ($newArray as $racerName)
+                    $allRacerNames[$key] = $racerName;
         }
-        return $allAbbrevNamesRacer;
+
+        return $allRacerNames;
     }
 
+    public function getTeamName(array $array): array
+    {
 
+        $allRacerNames = [];
+        foreach ($array as $key => $string) {
+            if (preg_match('/_([A-Z]{3}.+)/', $string, $newArray))
+                foreach ($newArray as $racerName)
+                    $allRacerNames[$key] = $racerName;
+        }
+
+        return $allRacerNames;
+    }
 }

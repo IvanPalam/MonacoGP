@@ -4,20 +4,17 @@ namespace MonacoGP;
 
 class ReportBuilder
 {
-    public function reportBuild(array $lapTimeArray, array $fullNameAndTeamArray): array
+    public function reportBuild(array $racerNameArray, array $teamNameArray, array $lapTimeArray): array
     {
         $reportArray = [];
-        foreach ($lapTimeArray as $keyAbbTime => $timeLapString) {
-            foreach ($fullNameAndTeamArray as $keyAbbName => $nameAndTeamString) {
-                if ($keyAbbTime == $keyAbbName) {
-                    $reportArray[$keyAbbTime] = $nameAndTeamString . " " . '|' . " " . $timeLapString;
+        asort($lapTimeArray);
+        foreach ($lapTimeArray as $keyLapTime => $lapTimeString) {
+            $reportArray[$keyLapTime] = $racerNameArray[$keyLapTime] ." | ". $teamNameArray[$keyLapTime] ." | ". $lapTimeString;
 
-                }
-            }
+
         }
 
         return $reportArray;
 
     }
-
 }

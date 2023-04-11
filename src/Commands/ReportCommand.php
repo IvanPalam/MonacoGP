@@ -7,6 +7,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use MonacoGP\Parser;
+use MonacoGP\TimeCounter;
+use MonacoGP\ReportBuilder;
 use MonacoGP\ReportPrinter;
 
 
@@ -22,11 +25,11 @@ class ReportCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Folder with input files')
             ->addOption(
-                'sort',
+                'sort_order',
                 's',
                 InputOption::VALUE_REQUIRED,
-                'shows list of drivers and optional order (default order is asc)',
-                'asc')
+                'shows list of drivers and optional order (default order is ASC)',
+                'ASC')
             ->addOption(
                 'driver',
                 null,
@@ -36,6 +39,40 @@ class ReportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln([
+            '<info>======              Racing Report Console App                  =====</>',
+            '<info>====================================================================</>',
+            '',
+        ]);
+        $folderPath = $input->getOption('files');
+        $abbrevLogPath = "$folderPath/abbreviations.txt";
+        $endLogPath = "$folderPath/end.log";
+        $startLogPath = "$folderPath/start.log";
+
+        $parser = new Parser();
+        $timeCounter = new TimeCounter();
+        $reportBuilder = new ReportBuilder();
+        $reportPrinter = new ReportPrinter;
+
+        $abbrevKeyAbbreviationArray = $parser->addAbbrevForArrayKey($abbrevLogPath);
+        $abbrevKeyEndArray = $parser->addAbbrevForArrayKey($endLogPath);
+        $abbrevKeyStartArray = $parser->addAbbrevForArrayKey($startLogPath);
+        $racerNameArray = $parser->getRacerName($abbrevKeyAbbreviationArray);
+        $teamNameArray = $parser->getTeamName($abbrevKeyAbbreviationArray);
+        $startTimeArray = $parser->getTime($abbrevKeyStartArray);
+        $endTimeArray = $parser->getTime($abbrevKeyEndArray);
+        $lapTimeArray = $timeCounter->lapTimeCounter($startTimeArray, $endTimeArray);
+
+        if ($driver = $input->getOption('driver')) {
+            $reportPrinter->printRacerInfo($driver, $racerNameArray, $teamNameArray, $lapTimeArray, $output);
+            return Command::SUCCESS;
+        }
+
+        $sortOrder = $input->getOption('sort_order');
+        $reportPrinter->printCliHtmlReport($racerNameArray, $teamNameArray, $lapTimeArray, $output, $sortOrder);
+
+        return Command::SUCCESS;
 
     }
+
 }
