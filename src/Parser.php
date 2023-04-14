@@ -4,8 +4,7 @@ namespace MonacoGP;
 
 class Parser
 {
-
-    public function addAbbrevForArrayKey(string $logFilePath): array
+    public function addAbbrevToArrayKey(string $logFilePath): array
     {
         $logArray = file($logFilePath);
         $allAbbrevNamesRacer = [];
@@ -20,7 +19,6 @@ class Parser
 
     public function getTime(array $array): array
     {
-
         $allRacerTimes = [];
         foreach ($array as $key => $string) {
             if (preg_match('/_.*/', $string, $newArray))
@@ -46,7 +44,6 @@ class Parser
 
     public function getTeamName(array $array): array
     {
-
         $allRacerNames = [];
         foreach ($array as $key => $string) {
             if (preg_match('/_([A-Z]{3}.+)/', $string, $newArray))
@@ -57,3 +54,4 @@ class Parser
         return $allRacerNames;
     }
 }
+

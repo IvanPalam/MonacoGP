@@ -12,7 +12,6 @@ use MonacoGP\TimeCounter;
 use MonacoGP\ReportBuilder;
 use MonacoGP\ReportPrinter;
 
-
 class ReportCommand extends Command
 {
     protected function configure()
@@ -48,31 +47,27 @@ class ReportCommand extends Command
         $abbrevLogPath = "$folderPath/abbreviations.txt";
         $endLogPath = "$folderPath/end.log";
         $startLogPath = "$folderPath/start.log";
-
         $parser = new Parser();
         $timeCounter = new TimeCounter();
         $reportBuilder = new ReportBuilder();
         $reportPrinter = new ReportPrinter;
-
-        $abbrevKeyAbbreviationArray = $parser->addAbbrevForArrayKey($abbrevLogPath);
-        $abbrevKeyEndArray = $parser->addAbbrevForArrayKey($endLogPath);
-        $abbrevKeyStartArray = $parser->addAbbrevForArrayKey($startLogPath);
+        $abbrevKeyAbbreviationArray = $parser->addAbbrevToArrayKey($abbrevLogPath);
+        $abbrevKeyEndArray = $parser->addAbbrevToArrayKey($endLogPath);
+        $abbrevKeyStartArray = $parser->addAbbrevToArrayKey($startLogPath);
         $racerNameArray = $parser->getRacerName($abbrevKeyAbbreviationArray);
         $teamNameArray = $parser->getTeamName($abbrevKeyAbbreviationArray);
         $startTimeArray = $parser->getTime($abbrevKeyStartArray);
         $endTimeArray = $parser->getTime($abbrevKeyEndArray);
         $lapTimeArray = $timeCounter->lapTimeCounter($startTimeArray, $endTimeArray);
-
         if ($driver = $input->getOption('driver')) {
             $reportPrinter->printRacerInfo($driver, $racerNameArray, $teamNameArray, $lapTimeArray, $output);
+
             return Command::SUCCESS;
         }
-
         $sortOrder = $input->getOption('sort_order');
         $reportPrinter->printCliHtmlReport($racerNameArray, $teamNameArray, $lapTimeArray, $output, $sortOrder);
 
         return Command::SUCCESS;
-
     }
-
 }
+

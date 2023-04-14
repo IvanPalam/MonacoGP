@@ -6,7 +6,6 @@ use DateTimeImmutable;
 
 class TimeCounter
 {
-
     public function lapTimeCounter(array $startTimeArray, array $endTimeArray): array
     {
         $allLapTimeArray = [];
@@ -16,12 +15,11 @@ class TimeCounter
                 if ($keyStart == $keyEnd)
                     $endTimeDate = new DateTimeImmutable($endTimeString);
             }
-
             $lapTime = $startTimeDate->diff($endTimeDate);
             $allLapTimeArray[$keyStart] = substr($lapTime->format('%H:%I:%S.%F'), 0, -3);
-
         }
 
         return $allLapTimeArray;
     }
 }
+

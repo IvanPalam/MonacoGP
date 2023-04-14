@@ -10,15 +10,13 @@ use MonacoGP\ReportPrinter;
 $abbrevLogPath = realpath('logfiles/abbreviations.txt');
 $endLogPath = realpath('logfiles/end.log');
 $startLogPath = realpath('logfiles/start.log');
-
 $parser = new Parser();
 $timeCounter = new TimeCounter();
 $reportBuilder = new ReportBuilder();
 $reportPrinter= new ReportPrinter;
-
-$abbrevKeyAbbreviationArray=$parser->addAbbrevForArrayKey($abbrevLogPath);
-$abbrevKeyEndArray=$parser->addAbbrevForArrayKey($endLogPath);
-$abbrevKeyStartArray=$parser->addAbbrevForArrayKey($startLogPath);
+$abbrevKeyAbbreviationArray=$parser->addAbbrevToArrayKey($abbrevLogPath);
+$abbrevKeyEndArray=$parser->addAbbrevToArrayKey($endLogPath);
+$abbrevKeyStartArray=$parser->addAbbrevToArrayKey($startLogPath);
 $racerNameArray=$parser->getRacerName($abbrevKeyAbbreviationArray);
 $teamNameArray=$parser->getTeamName($abbrevKeyAbbreviationArray);
 $startTimeArray=$parser->getTime($abbrevKeyStartArray);

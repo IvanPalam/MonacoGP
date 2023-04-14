@@ -2,7 +2,6 @@
 
 namespace MonacoGP;
 
-
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReportPrinter
@@ -21,7 +20,6 @@ class ReportPrinter
         echo '</ol>';
     }
 
-
     public function printCliHtmlReport(
         array $racerNameArray,
         array $teamNameArray,
@@ -31,7 +29,6 @@ class ReportPrinter
     ): void
     {
         if ($sortOrder == "DESC" || !$sortOrder || $sortOrder == "ASC") {
-
             if ($sortOrder == "DESC") {
                 arsort($lapTimeArray);
             } else {
@@ -46,7 +43,6 @@ class ReportPrinter
                     $output->writeln('--------------------------------------------------------------------');
                 }
                 $i++;
-
             }
         } else {
             $output->writeln("Enter the correct command from the available ones: 'ASC' or 'DESC'");
@@ -64,8 +60,8 @@ class ReportPrinter
         foreach ($racerNameArray as $key => $racerNameString) {
             if ($racer == $racerNameString) {
                 $output->writeln($racerNameString . " " . $teamNameArray[$key] . " " . $lapTimeArray[$key]);
-
             }
         }
     }
 }
+

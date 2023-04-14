@@ -10,11 +10,9 @@ class ReportBuilder
         asort($lapTimeArray);
         foreach ($lapTimeArray as $keyLapTime => $lapTimeString) {
             $reportArray[$keyLapTime] = $racerNameArray[$keyLapTime] ." | ". $teamNameArray[$keyLapTime] ." | ". $lapTimeString;
-
-
         }
 
         return $reportArray;
-
     }
 }
+
